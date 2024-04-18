@@ -35,7 +35,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Dashboard'),
+        title: Text('Administrator Hub'),
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -123,7 +123,7 @@ class UserManagementPage extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.person),
               title: Text('View User Details'),
-              subtitle: Text('Admins can view user details and information.'),
+              subtitle: Text('View user details and information.'),
             ),
           ),
           SizedBox(height: 20),
