@@ -34,9 +34,29 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Administrator Hub'),
+     appBar: AppBar(
+  title: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+        child: Image.asset(
+          'assets/QvrBo.png', // Replace 'assets/QvrBo.png' with your actual image path
+          width: 40, // Adjust size as needed
+          height: 40,
+        ),
       ),
+      Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          'QvrBo',
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ],
+  ),
+),
+
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -94,13 +114,6 @@ class DashboardOverviewPage extends StatelessWidget {
               subtitle: Text('80%'),
             ),
           ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Add functionality here
-            },
-            child: Text('View Detailed Report'),
-          ),
         ],
       ),
     );
@@ -121,17 +134,17 @@ class UserManagementPage extends StatelessWidget {
           SizedBox(height: 20),
           Card(
             child: ListTile(
-              leading: Icon(Icons.person),
-              title: Text('View User Details'),
-              subtitle: Text('View user details and information.'),
+              leading: Icon(Icons.people),
+              title: Text('Travelers'),
+              subtitle: Text('View traveler details and information.'),
             ),
           ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Add functionality here
-            },
-            child: Text('Manage User Roles'),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.business),
+              title: Text('Business Owners'),
+              subtitle: Text('View business owner details and information.'),
+            ),
           ),
         ],
       ),
