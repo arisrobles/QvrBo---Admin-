@@ -28,6 +28,7 @@ dependencies:
   cloud_firestore: ^4.17.0
   flutter_native_splash: ^2.4.0
   firebase_auth: ^4.19.2
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

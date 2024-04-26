@@ -1,34 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// ignore: library_prefixes
-import 'user.dart' as LocalUser; // Alias the User class from user.dart
-
 class FireStoreService {
-  // ignore: unused_field
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<List<LocalUser.User>> queryUsers() async { // Use the LocalUser alias
-    List<LocalUser.User> userList = [];
-
+  // Query users
+  Future<List<Map<String, dynamic>>> queryUsers() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('users').get();
-
-      for (QueryDocumentSnapshot docSnapshot in querySnapshot.docs) {
-        Map<String, dynamic>? userData = docSnapshot.data() as Map<String, dynamic>?; // Cast userData to Map<String, dynamic> or null
-
-        if (userData != null) {
-          LocalUser.User user = LocalUser.User.fromJson(userData); // Use the LocalUser alias
-
-          userList.add(user);
-        }
-      }
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection('Users').get();
+      List<Map<String, dynamic>> userList = [];
+      querySnapshot.docs.forEach((docSnapshot) {
+        userList.add(docSnapshot.data() as Map<String, dynamic>);
+      });
+      return userList;
     } catch (e) {
-      // Handle any potential errors here
       print('Error fetching users: $e');
+      throw e;
     }
+  }
 
-    return userList;
+  // Query bookings
+  Future<List<Map<String, dynamic>>> queryBookings() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await db.collection('bookings').get();
+      List<Map<String, dynamic>> bookingList = [];
+      querySnapshot.docs.forEach((docSnapshot) {
+        bookingList.add(docSnapshot.data() as Map<String, dynamic>);
+      });
+      return bookingList;
+    } catch (e) {
+      print('Error fetching bookings: $e');
+      throw e;
+    }
   }
 }
