@@ -6,7 +6,6 @@ import 'package:admin_hub/user_management_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:admin_hub/login_page.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -134,56 +133,6 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
   bool isLoading = false; // Track whether data is being fetched
   int completedBookings = 0;
   int cancelledBookings = 0;
-  late DateTime _selectedMonth = DateTime.now();
-
-// Method to update selected month
-void _updateSelectedMonth(DateTime month) {
-  setState(() {
-    _selectedMonth = month;
-  });
-}
-
-// Widget to display month selection
-Widget _buildMonthPicker() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-    child: DropdownButtonFormField<DateTime>(
-      value: _selectedMonth,
-      onChanged: (DateTime? newValue) {
-        if (newValue != null) {
-          _updateSelectedMonth(newValue);
-        }
-      },
-      decoration: InputDecoration(
-        labelText: 'Select Month',
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Colors.grey[200],
-      ),
-      items: _getAvailableMonths().map<DropdownMenuItem<DateTime>>((DateTime month) {
-        return DropdownMenuItem<DateTime>(
-          value: month,
-          child: Text(DateFormat('MMMM yyyy').format(month)),
-        );
-      }).toList(),
-    ),
-  );
-}
-
-// Method to get available months (disable upcoming months)
-List<DateTime> _getAvailableMonths() {
-  DateTime now = DateTime.now();
-  List<DateTime> availableMonths = [];
-
-  for (int i = 0; i < 6; i++) {
-    DateTime month = DateTime(now.year, now.month - i, 1);
-    availableMonths.add(month);
-  }
-
-  return availableMonths;
-}
-
-
 
   @override
   void initState() {
@@ -247,7 +196,6 @@ Widget build(BuildContext context) {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-        _buildMonthPicker(), // Add the month picker widget here
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
