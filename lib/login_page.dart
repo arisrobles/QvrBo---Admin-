@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF73AEF5), Color(0xFF61A4F1)],
+            colors: [Color.fromARGB(255, 252, 252, 252), Color.fromARGB(255, 233, 233, 233)],
           ),
         ),
         child: Center(
@@ -54,9 +54,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLogo() {
     return Image.asset(
-      'assets/QvrBo.png', // Replace 'logo.png' with your actual logo image path
-      height: 100,
-      width: 100,
+      'assets/QvrBo.png', 
+      height: 170,
+      width: 170,
     );
   }
 

@@ -100,16 +100,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 Navigator.pop(context); // Close the drawer after navigation
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Accommodation'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AccommodationPage()),
-                );
-              },
-            ),
+        
             // Add more list tiles for additional items
           ],
         ),
@@ -150,32 +141,37 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
       List<Map<String, dynamic>> fetchedUsers = await fireStoreService.queryUsers();
 
       double totalBookingRevenue = 0;
+      int activeBookings = 0; // Track active bookings
 
       // Calculate total revenue from bookings
-      for (var booking in fetchedBookings) {
+        for (var booking in fetchedBookings) {
+      var status = booking['status'];
+      if (status == 'active' || status == 'completed') {
         var priceDetails = booking['priceDetails'];
         double totalPrice = priceDetails['Total Price'] ?? 0;
         totalBookingRevenue += totalPrice * 0.05; // Multiply total price by 0.05 (5%)
-        if (booking['status'] == 'completed') {
+        if (status == 'completed') {
           completedBookings++;
-        } else if (booking['status'] == 'cancelled') {
-          cancelledBookings++;
         }
+        activeBookings++; // Increment active bookings count
+      } else if (status == 'cancelled') {
+        cancelledBookings++; // Increment cancelled bookings count
       }
+    }
 
       setState(() {
-        totalBookings = fetchedBookings.length;
-        totalUsers = fetchedUsers.length;
-        totalRevenue = totalBookingRevenue;
-        isLoading = false;
-      });
-    } catch (e) {
-      print('Error fetching data: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }
+      totalBookings = activeBookings; // Set totalBookings to active bookings count
+      totalUsers = fetchedUsers.length;
+      totalRevenue = totalBookingRevenue;
+      isLoading = false;
+    });
+  } catch (e) {
+    print('Error fetching data: $e');
+    setState(() {
+      isLoading = false;
+    });
   }
+}
 
 @override
 Widget build(BuildContext context) {
@@ -344,7 +340,7 @@ class _TotalBookingsPageState extends State<TotalBookingsPage> {
           _buildFilterDropdown(),
           Expanded(
             child: StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('Bookings').snapshots(),
+              stream: FirebaseFirestore.instance.collection('bookings').snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Center(
